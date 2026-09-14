@@ -436,11 +436,16 @@
       "TEMMUZ", "AĞUSTOS", "EYLÜL", "EKİM", "KASIM", "ARALIK"
     ];
 
-    /* MEVZUAT PARAMETRELERİ (YIL VE AYLARA GÖRE DİNAMİK VERİ TABANI) */
+    /* RESMİ MEVZUAT PARAMETRELERİ (Aylık Vergi Dilimlerine Göre Dinamik GV İstisnası) */
     const Parametretablolari = {
       2026: {
-        default: { asgari: "33030,00", dv_muaf: "250,70", gv_muaf: "4211,33" },
-        7: { asgari: "33030,00", dv_muaf: "250,70", gv_muaf: "4537,75" }
+        default: { asgari: "33030,00", dv_muaf: "250,70", gv_muaf: "4211,33" }, // Ocak - Haziran (%15 dilim)
+        6:       { asgari: "33030,00", dv_muaf: "250,70", gv_muaf: "4537,75" }, // Temmuz (Geçiş ayı)
+        7:       { asgari: "33030,00", dv_muaf: "250,70", gv_muaf: "5615,10" }, // Ağustos (%20 dilim)
+        8:       { asgari: "33030,00", dv_muaf: "250,70", gv_muaf: "5615,10" }, // Eylül
+        9:       { asgari: "33030,00", dv_muaf: "250,70", gv_muaf: "5615,10" }, // Ekim
+        10:      { asgari: "33030,00", dv_muaf: "250,70", gv_muaf: "5615,10" }, // Kasım
+        11:      { asgari: "33030,00", dv_muaf: "250,70", gv_muaf: "5615,10" }  // Aralık
       }
     };
 
@@ -588,7 +593,7 @@
       }
     }
 
-    /* --- DÜZELTİLMİŞ SAYI DÖNÜŞTÜRÜCÜ (G) --- */
+    /* --- SAYI DÖNÜŞTÜRÜCÜ (G) --- */
     function G(id) {
       let el = document.getElementById(id);
       if (!el) return 0;
@@ -620,7 +625,7 @@
       }, 2200);
     }
 
-    /* --- DÜZELTİLMİŞ OTOMATİK HESAPLA --- */
+    /* --- OTOMATİK HESAPLA --- */
     function OtomatikHesapla() {
       let B2 = G("s1");
       let B3 = G("s2");
