@@ -396,9 +396,9 @@
           <tr><td class="lbl">Yakacak Yardımı:</td><td class="input-cell"><input type="text" inputmode="decimal" id="s10" value="3341,82" onkeydown="HandleEnter(event)"></td></tr>
           <tr><td class="lbl">Sağlık Sigortası :</td><td class="input-cell"><input type="text" inputmode="decimal" id="s12" value="1121,24" onkeydown="HandleEnter(event)"></td></tr>
           <tr><td class="lbl">Sağlık Sigortası (Özel):</td><td class="input-cell"><input type="text" inputmode="decimal" id="s12d" value="1112,73" onkeydown="HandleEnter(event)"></td></tr>
-          <tr><td class="lbl">Asgari Ücret BRÜT:</td><td class="input-cell"><input type="text" inputmode="decimal" id="asgari" class="editable-param" value="" onkeyup="OtomatikHesapla()" onkeydown="HandleEnter(event)"></td></tr>
-          <tr><td class="lbl">DV Muafiyeti:</td><td class="input-cell"><input type="text" id="dv_muaf" class="readonly-input" readonly=""></td></tr>
-          <tr><td class="lbl">GV Muafiyeti:</td><td class="input-cell"><input type="text" id="gv_muaf" class="readonly-input" readonly=""></td></tr>
+          <tr><td class="lbl">Asgari Ücret BRÜT:</td><td class="input-cell"><input type="text" inputmode="decimal" id="asgari" class="editable-param" value="" onkeydown="HandleEnter(event)"></td></tr>
+          <tr><td class="lbl">DV Muafiyeti:</td><td class="input-cell"><input type="text" inputmode="decimal" id="dv_muaf" class="editable-param" value="" onkeydown="HandleEnter(event)"></td></tr>
+          <tr><td class="lbl">GV Muafiyeti:</td><td class="input-cell"><input type="text" inputmode="decimal" id="gv_muaf" class="editable-param" value="" onkeydown="HandleEnter(event)"></td></tr>
           <tr><td colspan="2"><hr></td></tr>
           <tr><td class="lbl">Ayni Yardım 2:</td><td class="input-cell"><input type="text" inputmode="decimal" id="s16" onkeydown="HandleEnter(event)"></td></tr>
           <tr><td class="lbl">İzin Parası:</td><td class="input-cell"><input type="text" inputmode="decimal" id="s17" onkeydown="HandleEnter(event)"></td></tr>
@@ -406,7 +406,7 @@
           <tr><td class="lbl">Bayram Ücreti:</td><td class="input-cell"><input type="text" inputmode="decimal" id="s19" onkeydown="HandleEnter(event)"></td></tr>
           <tr><td class="lbl">Öğrenim Yardımı:</td><td class="input-cell"><input type="text" inputmode="decimal" id="s20" onkeydown="HandleEnter(event)"></td></tr>
           <tr><td class="lbl">Vergi Dilimi:</td><td class="input-cell">
-            <select id="v1" onchange="OtomatikHesapla()" onkeydown="HandleEnter(event)">
+            <select id="v1" onkeydown="HandleEnter(event)">
               <option value="15">%15</option>
               <option value="20" selected="">%20</option>
               <option value="27">%27</option>
@@ -419,8 +419,8 @@
     <button class="btn" onclick="Hesapla()" id="btnHesapla">MAAŞI HESAPLA</button>
     
     <div class="result-panel">
-      <div class="result-row"><span>TOPLAM MAAŞ (Net):</span><span id="res6" class="result-val">0,00 TL</span></div>
-      <div class="result-row"><span>AYIN 6'SI NET ÖDEME:</span><span id="resToplam" class="result-val">0,00 TL</span></div>
+      <div class="result-row"><span>AYIN 6'SI NET ÖDEME:</span><span id="res6" class="result-val">0,00 TL</span></div>
+      <div class="result-row"><span>TOPLAM MAAŞ (Net):</span><span id="resToplam" class="result-val">0,00 TL</span></div>
     </div>
     
     <!-- LOGO ALANI (DETAY SAYFASI) -->
@@ -603,24 +603,6 @@
 
       if (s3El) s3El.value = temelBrut.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       if (s11El) s11El.value = ikramiye.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-      // Dinamik DV ve GV Muafiyeti Hesaplama
-      let asgariBrut = G("asgari");
-      let dvMuafEl = document.getElementById("dv_muaf");
-      let gvMuafEl = document.getElementById("gv_muaf");
-      let vOran = parseFloat(document.getElementById("v1").value) / 100;
-
-      if (asgariBrut > 0) {
-        let dvMuaf = Math.round(asgariBrut * 0.00759 * 100) / 100;
-        let asgariNetMatrah = Math.round(asgariBrut * 0.85 * 100) / 100;
-        let gvMuaf = Math.round(asgariNetMatrah * vOran * 100) / 100;
-
-        if (dvMuafEl) dvMuafEl.value = dvMuaf.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        if (gvMuafEl) gvMuafEl.value = gvMuaf.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      } else {
-        if (dvMuafEl) dvMuafEl.value = "";
-        if (gvMuafEl) gvMuafEl.value = "";
-      }
     }
 
     function HandleEnter(event) {
@@ -631,7 +613,8 @@
         
         const sequence = [
           "s1", "s2", "s4", "s5", "s6", "s7", "s8", "s13", "s14", 
-          "s9", "s10", "s12", "s12d", "asgari", "s16", "s17", "s18", "s19", "s20", "v1"
+          "s9", "s10", "s12", "s12d", "asgari", "dv_muaf", "gv_muaf", 
+          "s16", "s17", "s18", "s19", "s20", "v1"
         ];
 
         let index = sequence.indexOf(cId);
@@ -647,7 +630,6 @@
 
     function Hesapla() {
       try {
-        OtomatikHesapla();
         let B2 = G("s1"), B3 = G("s2"), B4 = B2 * B3;
         let C5 = G("s4") * B2 * 2;
         let C6 = G("s5") * B2 * 2;
@@ -656,12 +638,7 @@
         let C9 = G("s8");
         let B10 = G("s9"), B11 = 75 * B2, B12 = G("s10"), B13 = G("s12");
         let B16 = 0, B16_2 = G("s16"), B17 = G("s17"), B18 = G("s18"), B20 = G("s19"), B22 = G("s20");
-
-        // Muafiyetlerin Doağrudan Hesaplanması
-        let asgariBrut = G("asgari");
-        let v_oran = parseFloat(document.getElementById("v1").value) / 100;
-        let DV_M = Math.round(asgariBrut * 0.00759 * 100) / 100;
-        let GV_M = Math.round((asgariBrut * 0.85) * v_oran * 100) / 100;
+        let DV_M = G("dv_muaf"), GV_M = G("gv_muaf");
         
         let B26 = B4 + C5 + C6 + C7 + C8 + C9 + B10 + B11 + B12 + B13 + B16 + B16_2 + B17 + B18 + B20 + B22;
         let B27 = B26 - B10 - B13 - B16;
@@ -669,6 +646,7 @@
         let B31 = Math.round(B27 * 0.01 * 100) / 100;
         let B15 = G("s14");
         let B29 = B27 - B30 - B31 - B15;
+        let v_oran = parseFloat(document.getElementById("v1").value) / 100;
         let B33 = Math.round(((B29 * v_oran) - GV_M) * 100) / 100; if (B33 < 0) B33 = 0;
         let B32 = Math.round(((B26 * 0.00759) - DV_M) * 100) / 100; if (B32 < 0) B32 = 0;
         let B40 = B30 + B31 + B32 + B33;
