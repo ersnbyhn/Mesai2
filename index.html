@@ -611,9 +611,9 @@
       let vOran = parseFloat(document.getElementById("v1").value) / 100;
 
       if (asgariBrut > 0) {
-        let dvMuaf = asgariBrut * 0.00759;
-        let asgariNetMatrah = asgariBrut * 0.85;
-        let gvMuaf = asgariNetMatrah * vOran;
+        let dvMuaf = Math.round(asgariBrut * 0.00759 * 100) / 100;
+        let asgariNetMatrah = Math.round(asgariBrut * 0.85 * 100) / 100;
+        let gvMuaf = Math.round(asgariNetMatrah * vOran * 100) / 100;
 
         if (dvMuafEl) dvMuafEl.value = dvMuaf.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         if (gvMuafEl) gvMuafEl.value = gvMuaf.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -656,7 +656,12 @@
         let C9 = G("s8");
         let B10 = G("s9"), B11 = 75 * B2, B12 = G("s10"), B13 = G("s12");
         let B16 = 0, B16_2 = G("s16"), B17 = G("s17"), B18 = G("s18"), B20 = G("s19"), B22 = G("s20");
-        let DV_M = G("dv_muaf"), GV_M = G("gv_muaf");
+
+        // Muafiyetlerin Doağrudan Hesaplanması
+        let asgariBrut = G("asgari");
+        let v_oran = parseFloat(document.getElementById("v1").value) / 100;
+        let DV_M = Math.round(asgariBrut * 0.00759 * 100) / 100;
+        let GV_M = Math.round((asgariBrut * 0.85) * v_oran * 100) / 100;
         
         let B26 = B4 + C5 + C6 + C7 + C8 + C9 + B10 + B11 + B12 + B13 + B16 + B16_2 + B17 + B18 + B20 + B22;
         let B27 = B26 - B10 - B13 - B16;
@@ -664,7 +669,6 @@
         let B31 = Math.round(B27 * 0.01 * 100) / 100;
         let B15 = G("s14");
         let B29 = B27 - B30 - B31 - B15;
-        let v_oran = parseFloat(document.getElementById("v1").value) / 100;
         let B33 = Math.round(((B29 * v_oran) - GV_M) * 100) / 100; if (B33 < 0) B33 = 0;
         let B32 = Math.round(((B26 * 0.00759) - DV_M) * 100) / 100; if (B32 < 0) B32 = 0;
         let B40 = B30 + B31 + B32 + B33;
