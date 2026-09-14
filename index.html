@@ -339,7 +339,7 @@
     <!-- LOGO ALANI (ANA SAYFA) -->
     <div class="footer">
       <img src="https://i.ibb.co/mFNgxpdC/icon-192.png" alt="EB Logo" class="footer-logo">
-      <div class="footer-text">Hazırlayan: <span>ErsNByhN</span></div>
+      <div class="footer-text">ErsNByhN</div>
     </div>
   </div>
 
@@ -426,7 +426,7 @@
     <!-- LOGO ALANI (DETAY SAYFASI) -->
     <div class="footer">
       <img src="https://i.ibb.co/mFNgxpdC/icon-192.png" alt="EB Logo" class="footer-logo">
-      <div class="footer-text">Hazırlayan: <span>ErsNByhN</span></div>
+      <div class="footer-text">ErsNByhN</div>
     </div>
   </div>
 
@@ -435,6 +435,14 @@
       "OCAK", "ŞUBAT", "MART", "NİSAN", "MAYIS", "HAZİRAN",
       "TEMMUZ", "AĞUSTOS", "EYLÜL", "EKİM", "KASIM", "ARALIK"
     ];
+
+    /* MEVZUAT PARAMETRELERİ (YIL VE AYLARA GÖRE DİNAMİK VERİ TABANI) */
+    const Parametretablolari = {
+      2026: {
+        default: { asgari: "33030,00", dv_muaf: "250,70", gv_muaf: "4211,33" },
+        7: { asgari: "33030,00", dv_muaf: "250,70", gv_muaf: "4537,75" }
+      }
+    };
 
     const year = 2026;
     let selectedMonthIndex = 0;
@@ -446,6 +454,24 @@
     const currentMonthTitle = document.getElementById("currentMonthTitle");
     const totalHours = document.getElementById("totalHours");
     const backBtn = document.getElementById("backBtn");
+
+    /* OTOMATİK VERİ ÇEKME/DOLDURMA FONKSİYONU */
+    function ParametreleriOtomatikGetir(y, mIndex) {
+      let asgariInput = document.getElementById("asgari");
+      let dvInput = document.getElementById("dv_muaf");
+      let gvInput = document.getElementById("gv_muaf");
+
+      if (Parametretablolari[y]) {
+        let ayVerisi = Parametretablolari[y][mIndex] || Parametretablolari[y].default;
+        asgariInput.value = ayVerisi.asgari;
+        dvInput.value = ayVerisi.dv_muaf;
+        gvInput.value = ayVerisi.gv_muaf;
+      } else {
+        asgariInput.value = "";
+        dvInput.value = "";
+        gvInput.value = "";
+      }
+    }
 
     /* --- TAKVİM İŞLEMLERİ --- */
     function renderMonthsList() {
@@ -476,6 +502,9 @@
       currentMonthTitle.innerText = monthNames[index];
       monthsView.classList.add("hidden");
       calendarView.classList.remove("hidden");
+      
+      ParametreleriOtomatikGetir(year, index);
+      
       renderCalendar(index);
       window.scrollTo(0, 0);
     }
